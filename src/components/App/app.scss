@@ -2,35 +2,24 @@
 @use '../../styles/util/' as u1;
 
 
-
-.test1 {
-    @include u1.media(">=desktop") {
-        background-color: yellow;
-
-        &::after {
-            content: "desktop"
-        }
-    }
-    @include u1.media(">=tablet", "<desktop") {
-        background-color: skyblue;
-
-        &::after {
-            content: "tablet"
-        }
-    }
-
-    @include u1.media(">=phone", "<tablet") {
-        background-color: aquamarine;
-
-        &::after {
-            content: "phone"
-        }
-    }
-}
-
 body {
-    background-color: #1F2326 !important;
+    background-color: #f7ffff !important;
+    color: #2c4d5c;
 }
 .AppMain {
     @include u1.block_display();
+
+    .logoCvr {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .logoImg {
+            width: 100px;
+
+            img {
+                width: 100%;
+            }
+        }
+    }
 }
