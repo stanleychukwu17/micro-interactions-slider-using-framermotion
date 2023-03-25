@@ -1,10 +1,13 @@
 @forward '../../styles/globals/';
 @use '../../styles/util/' as u1;
 
+$borderColor: #f1f2f6;
+$sidePadding: 3%;
+$textColor: #2c4d5c;
 
 body {
     background-color: #f7ffff !important;
-    color: #2c4d5c;
+    color: $textColor;
 }
 .AppMain {
     @include u1.block_display();
@@ -13,12 +16,77 @@ body {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        padding: 15px $sidePadding;
+        border-bottom: 2px solid $borderColor;
 
         .logoImg {
             width: 100px;
 
             img {
                 width: 100%;
+            }
+        }
+        .logoMenu {
+            font-size: u1.rem(27);
+        }
+    }
+
+    .bckBuy_cvr {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px $sidePadding;
+        border-bottom: 2px solid $borderColor;
+    }
+
+    .midSecCvr {
+        padding: 20px $sidePadding;
+
+        > div:nth-child(1) {
+            padding: 5px 5px
+        }
+        > div:nth-child(2) {
+            padding: 5px;
+            font-size: u1.rem(30);
+        }
+        > div:nth-child(3) {
+            @include u1.block_display();
+            height: 125px;
+            padding: 5px 5px;
+            word-spacing: u1.rem(2);
+            font-size: u1.rem(15.5);
+            line-height: 1.3;
+        }
+        .btnsCvr {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+
+            .btnItm {
+                button {
+                    font-size: u1.rem(13.45);
+                    letter-spacing: 1px;
+                    font-weight: bold;
+                    padding: 17px 25px;
+                    box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+                    border-radius: 3px;
+                    border: 0;
+                    background-color: #0062ac;
+                    color: #f7e702;
+                }
+            }
+            .dwnBtnCvr {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border: 1px solid $textColor;
+                width: 60px;
+                height: 60px;
+                margin: 0 3% 0 0;
+                border-radius: 100%;
+                font-size: u1.rem(20);
+                box-shadow: 3px 3px 0 #0062ac;
             }
         }
     }
