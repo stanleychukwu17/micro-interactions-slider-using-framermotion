@@ -5,6 +5,15 @@ $borderColor: #f1f2f6;
 $sidePadding: 3%;
 $textColor: #2c4d5c;
 
+.button {
+    position: relative;
+    cursor: pointer;
+
+    &:active {
+        top: 2px;
+    }
+}
+
 body {
     background-color: #f7ffff !important;
     color: $textColor;

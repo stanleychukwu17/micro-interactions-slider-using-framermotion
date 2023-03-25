@@ -40,9 +40,9 @@ const App = () => {
                 </div>
                 <div className="btnsCvr">
                     <div className="btnItm">
-                        <button>Buy now $59</button>
+                        <button className='button'>Buy now $59</button>
                     </div>
-                    <div className="dwnBtnCvr">
+                    <div className="dwnBtnCvr button">
                         <HiArrowNarrowDown />
                     </div>
                 </div>
