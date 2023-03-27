@@ -109,4 +109,11 @@ body {
             }
         }
     }
+
+    .ImgBoard {
+        @include u1.block_display();
+        width: 100%;
+        padding: 15px $sidePadding;
+        margin: 0 0 50px;
+    }
 }
