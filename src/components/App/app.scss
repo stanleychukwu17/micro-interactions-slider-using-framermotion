@@ -46,6 +46,16 @@ body {
         align-items: center;
         padding: 15px $sidePadding;
         border-bottom: 2px solid $borderColor;
+        font-weight: bold;
+        font-size: u1.rem(15);
+
+        .bckBuy_btn {
+            span {
+                position: relative;
+                bottom: -2.3px;
+                margin: 0 5px 0 0;
+            }
+        }
     }
 
     .midSecCvr {

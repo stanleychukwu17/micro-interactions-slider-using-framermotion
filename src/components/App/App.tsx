@@ -23,11 +23,13 @@ const App = () => {
                 </div>
             </div>
             <div className="bckBuy_cvr">
-                <div className="">
-                    <FaAngleLeft />
+                <div className="bckBuy_btn">
+                    <span>
+                        <FaAngleLeft />
+                    </span>
                     Back
                 </div>
-                <div className="">
+                <div className="bckBuy_prc">
                     Buy now $59.99
                 </div>
             </div>
