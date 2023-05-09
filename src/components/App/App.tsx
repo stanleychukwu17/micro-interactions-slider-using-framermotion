@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 // import { gsap } from 'gsap';
-import { gVariant } from './Variants';
+import { gVariant, buttonVariant } from './Variants';
 
 import './app.scss';
 
@@ -12,7 +12,6 @@ import { FaAngleLeft } from "react-icons/fa";
 import { HiArrowNarrowDown } from "react-icons/hi";
 
 
-console.log(logo)
 const App = () => {
 
     const imageBoardClicked = () => {
@@ -21,14 +20,14 @@ const App = () => {
 
     return (
         <div className="AppMain">
-            <motion.div variants={gVariant} custom={0} initial='initial' animate='animate' className="logoCvr">
+            <motion.header variants={gVariant} custom={0} initial='initial' animate='animate' className="logoCvr">
                 <div className="logoImg">
                     <img src={logo} alt="" />
                 </div>
                 <div className="logoMenu">
                     <AiOutlineMenu />
                 </div>
-            </motion.div>
+            </motion.header>
             <motion.div variants={gVariant} custom={1} initial='initial' animate='animate' className="bckBuy_cvr">
                 <div className="bckBuy_btn">
                     <span>
@@ -50,9 +49,9 @@ const App = () => {
             </motion.div>
             <motion.div variants={gVariant} custom={3} initial='initial' animate='animate' className="btnsCvr">
                 <motion.div className="btnItm">
-                    <button className='button'>Buy now $59</button>
+                    <motion.button variants={buttonVariant} whileHover='whileHover' className='button'>Buy now $59</motion.button>
                 </motion.div>
-                <motion.div className="dwnBtnCvr button">
+                <motion.div variants={buttonVariant} whileHover='whileHover' className="dwnBtnCvr button">
                     <HiArrowNarrowDown />
                 </motion.div>
             </motion.div>

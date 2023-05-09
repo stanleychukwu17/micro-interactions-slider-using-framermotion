@@ -26,3 +26,10 @@ export const gVariant: general = {
         }
     })
 }
+
+export const buttonVariant: general & {whileHover: Variant} = {
+    whileHover : {
+        scale: 1.1,
+        boxShadow: 'none'
+    }
+}
