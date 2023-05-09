@@ -111,11 +111,22 @@ body {
         }
     }
 
-    .ImgBoard {
+    .ImgBoardOutside {
         @include u1.block_display();
         width: 100%;
         padding: 15px $sidePadding 5px;
-        background-color: #0062ac;
+
+        .ImgBoardInside {
+            position: relative;
+            overflow: hidden;
+            height: 450px;
+            cursor: grab;
+
+            img {
+                max-height: 100%;
+                pointer-events: none;
+            }
+        }
     }
 
     .noteOnDrag {

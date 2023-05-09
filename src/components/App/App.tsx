@@ -1,5 +1,6 @@
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-// import { gsap } from 'gsap';
+import { gsap } from 'gsap';
 import { gVariant, buttonVariant } from './Variants';
 
 // imports the stylesheet for this component
@@ -16,9 +17,28 @@ import { HiArrowNarrowDown } from "react-icons/hi";
 
 
 const App = () => {
+    const updatedWidth = useRef<boolean>(false)
+
+    useEffect(() => {
+        imageBoardClicked()
+        return () => { }
+    }, [])
 
     const imageBoardClicked = () => {
-        console.log('the image has been clicked on')
+        // if the below is true, we've already updated the width
+        if (updatedWidth.current) { return; }
+
+        const imgBoardInside = document.querySelector('div.ImgBoardInside img') as Element
+        const cssObj = window.getComputedStyle(imgBoardInside, null);
+        const imgBoardWidth = Number(cssObj.getPropertyValue("width").replace(/[^0-9.]/ig, ''));
+
+        // updates the width of the image cover
+        if (imgBoardWidth > 0) {
+            gsap.set('div.ImgBoardInside', {width: `${imgBoardWidth + 10}px`})
+            updatedWidth.current = true
+        } else {
+            setTimeout( () => { imageBoardClicked() }, 500 )
+        }
     }
 
     return (
@@ -60,10 +80,12 @@ const App = () => {
                     </motion.div>
                 </motion.div>
             </div>
-            <div className="ImgBoard">
-                <div className="" onClick={() => imageBoardClicked()}>
+            <div className="ImgBoardOutside">
+                <motion.div
+                    drag='x'
+                    className="ImgBoardInside">
                     <img src={imageBoard} alt="" />
-                </div>
+                </motion.div>
             </div>
             <div className="noteOnDrag">
                 <span><FaAngleLeft /></span> Drag to enlarge
