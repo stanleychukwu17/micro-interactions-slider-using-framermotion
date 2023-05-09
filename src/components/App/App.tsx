@@ -7,7 +7,7 @@ import './app.scss';
 
 // importing of the assets that will be used in this component
 import logo from '../../assets/logo/logo.svg'
-import imageBoard from '../../assets/images/board.jpg'
+import imageBoard from '../../assets/images/b1.png'
 
 // react-icons to be used in this component
 import { AiOutlineMenu } from "react-icons/ai";

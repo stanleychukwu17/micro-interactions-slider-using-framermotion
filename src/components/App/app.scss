@@ -115,6 +115,7 @@ body {
         @include u1.block_display();
         width: 100%;
         padding: 15px $sidePadding 5px;
+        background-color: #0062ac;
     }
 
     .noteOnDrag {
