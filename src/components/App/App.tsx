@@ -2,11 +2,14 @@ import { motion } from 'framer-motion';
 // import { gsap } from 'gsap';
 import { gVariant, buttonVariant } from './Variants';
 
+// imports the stylesheet for this component
 import './app.scss';
 
+// importing of the assets that will be used in this component
 import logo from '../../assets/logo/logo.svg'
 import imageBoard from '../../assets/images/board.jpg'
 
+// react-icons to be used in this component
 import { AiOutlineMenu } from "react-icons/ai";
 import { FaAngleLeft } from "react-icons/fa";
 import { HiArrowNarrowDown } from "react-icons/hi";
