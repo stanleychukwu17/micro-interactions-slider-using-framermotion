@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import { useCallback, useEffect, useRef } from 'react';
+import { motion, useMotionValue, useAnimationControls } from 'framer-motion';
 import { gsap } from 'gsap';
-import { gVariant, buttonVariant } from './Variants';
+import { gVariant, buttonVariant, ImageBoardCovered } from './Variants';
 
 // imports the stylesheet for this component
 import './app.scss';
@@ -18,16 +18,12 @@ import { HiArrowNarrowDown } from "react-icons/hi";
 
 const App = () => {
     const updatedWidth = useRef<boolean>(false)
+    const xDrag = useMotionValue(0)
+    const dragTrigger = useAnimationControls()
 
-    useEffect(() => {
-        imageBoardClicked()
-        return () => { }
-    }, [])
 
-    const imageBoardClicked = () => {
-        // if the below is true, we've already updated the width
-        if (updatedWidth.current) { return; }
 
+    const imageBoardClicked = useCallback(() => {
         const imgBoardInside = document.querySelector('div.ImgBoardInside img') as Element
         const cssObj = window.getComputedStyle(imgBoardInside, null);
         const imgBoardWidth = Number(cssObj.getPropertyValue("width").replace(/[^0-9.]/ig, ''));
@@ -35,11 +31,55 @@ const App = () => {
         // updates the width of the image cover
         if (imgBoardWidth > 0) {
             gsap.set('div.ImgBoardInside', {width: `${imgBoardWidth + 10}px`})
-            updatedWidth.current = true
         } else {
             setTimeout( () => { imageBoardClicked() }, 500 )
         }
-    }
+    }, [])
+
+    useEffect(() => {
+        imageBoardClicked()
+        return () => { }
+    }, [imageBoardClicked])
+
+
+
+    
+    const expandTheImageBoard = useCallback(async (wch:'intro'|'out') => {
+        if (wch === 'intro') {
+            dragTrigger.start('animate')
+            gsap.set('div.ImgBoardOutside', { height:'100vh' })
+            
+            // gsap.to('div.top_section', {marginTop:'-500px', opacity:0, duration:1})
+            // gsap.set('div.noteOnDrag', {display: 'none'})
+        } else {
+            // gsap.to('div.top_section', {marginTop:'0px', opacity:1, duration:1.5})
+            // gsap.set('div.noteOnDrag', {display: 'block'})
+            await dragTrigger.start('normal')
+            gsap.set('div.ImgBoardOutside', { height:'400px'})
+
+            
+        }
+    }, [dragTrigger])
+
+    useEffect(() => {
+        const unSubscribe = xDrag.onChange(latest => {
+            console.log('boss is changing', {latest})
+
+            if (latest > -10) {
+                expandTheImageBoard('out')
+                imageBoardClicked()
+                console.log('remove')
+            } else if (latest <= -10) {
+
+                expandTheImageBoard('intro')
+                imageBoardClicked()
+            }
+        })
+    
+        return () => { unSubscribe() }
+    }, [xDrag, expandTheImageBoard])
+
+
 
     return (
         <div className="AppMain">
@@ -80,13 +120,21 @@ const App = () => {
                     </motion.div>
                 </motion.div>
             </div>
-            <div className="ImgBoardOutside">
+            <motion.div
+                variants={ImageBoardCovered}
+                animate={dragTrigger}
+                className="ImgBoardOutside"
+            >
                 <motion.div
+                    className="ImgBoardInside"
                     drag='x'
-                    className="ImgBoardInside">
+                    dragConstraints={{left:-700, right:0}}
+                    // onDrag={}
+                    style={{x:xDrag}}
+                >
                     <img src={imageBoard} alt="" />
                 </motion.div>
-            </div>
+            </motion.div>
             <div className="noteOnDrag">
                 <span><FaAngleLeft /></span> Drag to enlarge
             </div>

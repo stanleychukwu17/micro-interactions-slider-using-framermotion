@@ -33,3 +33,22 @@ export const buttonVariant: general & {whileHover: Variant} = {
         boxShadow: 'none'
     }
 }
+
+export const ImageBoardCovered: general & {normal: Variant} = { 
+    normal: {
+        backgroundColor: 'transparent',
+        y: '0',
+        transition: {
+            duration: 0,
+            ease: 'easeOut',
+        }
+    },
+    animate: {
+        backgroundColor: '#333',
+        y: '-400px',
+        transition: {
+            duration: 0,
+            ease: 'easeOut',
+        }
+    }
+}
