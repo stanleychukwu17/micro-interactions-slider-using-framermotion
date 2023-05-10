@@ -8,6 +8,7 @@ import './app.scss';
 
 // importing of the assets that will be used in this component
 import logo from '../../assets/logo/logo.svg'
+import logo2 from '../../assets/logo/logo2.svg'
 import imageBoard from '../../assets/images/b1.png'
 
 // react-icons to be used in this component
@@ -83,7 +84,7 @@ const App = () => {
 
     return (
         <div className="AppMain">
-            <div className="top_section">
+            <motion.div className="top_section">
                 <motion.header variants={gVariant} custom={0} initial='initial' animate='animate' className="logoCvr">
                     <div className="logoImg">
                         <img src={logo} alt="" />
@@ -119,12 +120,20 @@ const App = () => {
                         <HiArrowNarrowDown />
                     </motion.div>
                 </motion.div>
-            </div>
+            </motion.div>
             <motion.div
                 variants={ImageBoardCovered}
                 animate={dragTrigger}
                 className="ImgBoardOutside"
             >
+                <div className="">
+                    <div className="">
+                        <div className="logoImg">
+                            <img src={logo2} alt="" />
+                        </div>
+                    </div>
+                    <div className=""></div>
+                </div>
                 <motion.div
                     className="ImgBoardInside"
                     drag='x'

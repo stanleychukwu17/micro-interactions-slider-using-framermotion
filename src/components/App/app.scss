@@ -21,6 +21,11 @@ body {
 .AppMain {
     @include u1.block_display();
 
+    .logoImg {
+        width: 100px;
+        img { width: 100%; }
+    }
+
     .top_section {
         display: block;
         position: relative;
@@ -32,13 +37,6 @@ body {
             padding: 15px $sidePadding;
             border-bottom: 2px solid $borderColor;
     
-            .logoImg {
-                width: 100px;
-    
-                img {
-                    width: 100%;
-                }
-            }
             .logoMenu {
                 font-size: u1.rem(27);
             }
