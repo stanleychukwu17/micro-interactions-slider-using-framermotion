@@ -19,35 +19,32 @@ import { HiArrowNarrowDown } from "react-icons/hi";
 
 
 const App = () => {
-    const expandedImageView = useRef<boolean>(false)
-    const current_distance_scrolled_from_the_top = useRef<number>(0)
-    const xDrag = useMotionValue(0)
-    const dragTrigger = useAnimationControls()
+    const expandedImageView = useRef<boolean>(false) // if true, the viewer is in an expanded mode
+    const latest_scrollTop = useRef<number>(0) // stores the last scroll position of the document before enlarging the image dragger
+    const xDrag = useMotionValue(0) // drags the x-position of the image dragger
+    const dragTrigger = useAnimationControls() // controls alot of the animations, this is probably one of my best hooks from framerMotion
 
-
-
+    // resizes the width of the image cover('.ImgBoardInside') to cover the image completely
     const resize_the_image_board = useCallback(() => {
-        const imgBoardInside = document.querySelector('div.ImgBoardInside img') as Element
-        const cssObj = window.getComputedStyle(imgBoardInside, null);
-        const imgBoardWidth = Number(cssObj.getPropertyValue("width").replace(/[^0-9.]/ig, ''));
+        const img = document.querySelector('div.ImgBoardInside img') as Element
+        const cssObj = window.getComputedStyle(img, null);
+        const imgWidth = Number(cssObj.getPropertyValue("width").replace(/[^0-9.]/ig, ''));
 
         // updates the width of the image cover
-        if (imgBoardWidth > 0) {
-            gsap.set('div.ImgBoardInside', {width: `${imgBoardWidth + 10}px`})
+        if (imgWidth > 0) {
+            gsap.set('div.ImgBoardInside', {width: `${imgWidth + 10}px`})
         } else {
             setTimeout( () => { resize_the_image_board() }, 500 )
         }
     }, [])
 
-    useEffect(() => {
-        resize_the_image_board()
-        return () => { }
-    }, [resize_the_image_board])
+    // just to call the resize_the_image_board() when the page is done loading
+    useEffect(() => { resize_the_image_board() }, [resize_the_image_board])
 
 
-
+    // when the use exits the enlarged image viewer, we want the document to scroll back to the position it was pre-enlargement
     const scroll_body_back_to_its_last_scroll = useCallback(() => {
-        let lastTop = current_distance_scrolled_from_the_top.current;
+        let lastTop = latest_scrollTop.current;
         document.body.scrollTop = document.documentElement.scrollTop = lastTop
     }, [])
 
@@ -56,8 +53,8 @@ const App = () => {
             dragTrigger.start('animate')
             gsap.set('div.ImgBoardOutside', { height:'100vh' })
 
-            current_distance_scrolled_from_the_top.current = document.documentElement.scrollTop
-            document.querySelector('body')?.classList.add('stopOverFlow')
+            latest_scrollTop.current = document.documentElement.scrollTop
+            document.querySelector('body')?.classList.add('stopOverFlow') // stops the body from overFlowing scroll
             document.body.scrollTop = document.documentElement.scrollTop = 0;
         } else {
             await dragTrigger.start('normal')
@@ -66,17 +63,21 @@ const App = () => {
             document.querySelector('body')?.classList.remove('stopOverFlow')
             scroll_body_back_to_its_last_scroll()
         }
-    }, [dragTrigger])
+    }, [dragTrigger, scroll_body_back_to_its_last_scroll])
 
     useEffect(() => {
         const unSubscribe = xDrag.onChange(latest => {
 
             if (latest > -10) {
+                if (!expandedImageView.current) { // image viewer already collapsed, no need to collapse again
+                    return
+                }
+
                 expandTheImageBoard('out')
                 resize_the_image_board()
                 expandedImageView.current = false;
             } else if (latest <= -10) {
-                if (expandedImageView.current) {
+                if (expandedImageView.current) { // image viewer already expanded, no need to expand again
                     return
                 }
 
@@ -87,7 +88,7 @@ const App = () => {
         })
     
         return () => { unSubscribe() }
-    }, [xDrag, expandTheImageBoard])
+    }, [xDrag, expandTheImageBoard, resize_the_image_board])
 
 
 
