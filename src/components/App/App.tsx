@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { motion, useMotionValue, useAnimationControls } from 'framer-motion';
 import { gsap } from 'gsap';
-import { gVariant, buttonVariant, ImageBoardCovered, enlargeHeader } from './Variants';
+import { gVariant, buttonVariant, ImageBoardCovered, enlargeHeader, topSectionVariant } from './Variants';
 
 // imports the stylesheet for this component
 import './app.scss';
@@ -93,7 +93,7 @@ const App = () => {
 
     return (
         <div className="AppMain">
-            <motion.div className="top_section">
+            <motion.div className="top_section" variants={topSectionVariant} animate={dragTrigger}>
                 <motion.header variants={gVariant} custom={0} initial='initial' animate='animate' className="logoCvr">
                     <div className="logoImg">
                         <img src={logo} alt="" />

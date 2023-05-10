@@ -34,6 +34,24 @@ export const buttonVariant: general & {whileHover: Variant} = {
     }
 }
 
+export const topSectionVariant: general & { normal: Variant } = {
+    normal: {
+        y: '0px',
+        opacity: 1,
+        transition: {
+            delay:0.1,
+            duration: 0.4
+        }
+    },
+    animate: {
+        y: '-100px',
+        opacity: 0,
+        transition: {
+            duration: 0.1
+        }
+    }
+}
+
 export const ImageBoardCovered: general & {normal: Variant} = { 
     normal: {
         backgroundColor: 'transparent',
