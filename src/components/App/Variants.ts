@@ -39,7 +39,7 @@ export const ImageBoardCovered: general & {normal: Variant} = {
         backgroundColor: 'transparent',
         y: '0px',
         transition: {
-            duration: 0.3,
+            duration: 0.5,
             ease: 'easeOut',
         }
     },
@@ -47,7 +47,7 @@ export const ImageBoardCovered: general & {normal: Variant} = {
         backgroundColor: '#333',
         y: '-480px',
         transition: {
-            duration: 0.3,
+            duration: 0.5,
             ease: 'easeOut',
         }
     }
@@ -56,16 +56,8 @@ export const ImageBoardCovered: general & {normal: Variant} = {
 export const enlargeHeader: general & {normal: Variant} = { 
     normal: {
         display: 'none',
-        // transition: {
-        //     duration: 0.3,
-        //     ease: 'easeOut',
-        // }
     },
     animate: {
         display: 'flex',
-        // transition: {
-        //     duration: 0.3,
-        //     ease: 'easeOut',
-        // }
     }
 }

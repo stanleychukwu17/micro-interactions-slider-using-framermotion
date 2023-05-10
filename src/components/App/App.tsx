@@ -48,11 +48,7 @@ const App = () => {
 
     const scroll_body_back_to_its_last_scroll = useCallback(() => {
         let lastTop = current_distance_scrolled_from_the_top.current;
-        console.log(lastTop, 'before update')
         document.body.scrollTop = document.documentElement.scrollTop = lastTop
-
-        lastTop = document.documentElement.scrollTop;
-        console.log(lastTop, 'after update')
     }, [])
 
     const expandTheImageBoard = useCallback(async (wch:'intro'|'out') => {
@@ -74,13 +70,16 @@ const App = () => {
 
     useEffect(() => {
         const unSubscribe = xDrag.onChange(latest => {
-            // console.log('boss is changing', {latest})
 
             if (latest > -10) {
                 expandTheImageBoard('out')
                 resize_the_image_board()
                 expandedImageView.current = false;
             } else if (latest <= -10) {
+                if (expandedImageView.current) {
+                    return
+                }
+
                 expandTheImageBoard('intro')
                 resize_the_image_board()
                 expandedImageView.current = true;
@@ -147,9 +146,8 @@ const App = () => {
                 <motion.div
                     className="ImgBoardInside"
                     drag='x'
-                    dragConstraints={{left:-900, right:0}}
+                    dragConstraints={{left:-1000, right:0}}
                     dragElastic={false}
-                    // onDrag={}
                     style={{x:xDrag}}
                 >
                     <img src={imageBoard} alt="" />
