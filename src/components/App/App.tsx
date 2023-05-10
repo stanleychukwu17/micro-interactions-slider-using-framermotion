@@ -128,7 +128,8 @@ const App = () => {
                 <motion.div
                     className="ImgBoardInside"
                     drag='x'
-                    dragConstraints={{left:-700, right:0}}
+                    dragConstraints={{left:-900, right:0}}
+                    dragElastic={false}
                     // onDrag={}
                     style={{x:xDrag}}
                 >

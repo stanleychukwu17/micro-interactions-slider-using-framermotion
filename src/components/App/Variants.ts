@@ -37,17 +37,17 @@ export const buttonVariant: general & {whileHover: Variant} = {
 export const ImageBoardCovered: general & {normal: Variant} = { 
     normal: {
         backgroundColor: 'transparent',
-        y: '0',
+        y: '0px',
         transition: {
-            duration: 0,
+            duration: 0.3,
             ease: 'easeOut',
         }
     },
     animate: {
         backgroundColor: '#333',
-        y: '-400px',
+        y: '-480px',
         transition: {
-            duration: 0,
+            duration: 0.3,
             ease: 'easeOut',
         }
     }
