@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { motion, useMotionValue, useAnimationControls } from 'framer-motion';
 import { gsap } from 'gsap';
-import { gVariant, buttonVariant, ImageBoardCovered } from './Variants';
+import { gVariant, buttonVariant, ImageBoardCovered, enlargeHeader } from './Variants';
 
 // imports the stylesheet for this component
 import './app.scss';
@@ -14,17 +14,19 @@ import imageBoard from '../../assets/images/b1.png'
 // react-icons to be used in this component
 import { AiOutlineMenu } from "react-icons/ai";
 import { FaAngleLeft } from "react-icons/fa";
+import { GrClose } from "react-icons/gr";
 import { HiArrowNarrowDown } from "react-icons/hi";
 
 
 const App = () => {
-    const updatedWidth = useRef<boolean>(false)
+    const expandedImageView = useRef<boolean>(false)
+    const current_distance_scrolled_from_the_top = useRef<number>(0)
     const xDrag = useMotionValue(0)
     const dragTrigger = useAnimationControls()
 
 
 
-    const imageBoardClicked = useCallback(() => {
+    const resize_the_image_board = useCallback(() => {
         const imgBoardInside = document.querySelector('div.ImgBoardInside img') as Element
         const cssObj = window.getComputedStyle(imgBoardInside, null);
         const imgBoardWidth = Number(cssObj.getPropertyValue("width").replace(/[^0-9.]/ig, ''));
@@ -33,47 +35,55 @@ const App = () => {
         if (imgBoardWidth > 0) {
             gsap.set('div.ImgBoardInside', {width: `${imgBoardWidth + 10}px`})
         } else {
-            setTimeout( () => { imageBoardClicked() }, 500 )
+            setTimeout( () => { resize_the_image_board() }, 500 )
         }
     }, [])
 
     useEffect(() => {
-        imageBoardClicked()
+        resize_the_image_board()
         return () => { }
-    }, [imageBoardClicked])
+    }, [resize_the_image_board])
 
 
 
-    
+    const scroll_body_back_to_its_last_scroll = useCallback(() => {
+        let lastTop = current_distance_scrolled_from_the_top.current;
+        console.log(lastTop, 'before update')
+        document.body.scrollTop = document.documentElement.scrollTop = lastTop
+
+        lastTop = document.documentElement.scrollTop;
+        console.log(lastTop, 'after update')
+    }, [])
+
     const expandTheImageBoard = useCallback(async (wch:'intro'|'out') => {
         if (wch === 'intro') {
             dragTrigger.start('animate')
             gsap.set('div.ImgBoardOutside', { height:'100vh' })
-            
-            // gsap.to('div.top_section', {marginTop:'-500px', opacity:0, duration:1})
-            // gsap.set('div.noteOnDrag', {display: 'none'})
+
+            current_distance_scrolled_from_the_top.current = document.documentElement.scrollTop
+            document.querySelector('body')?.classList.add('stopOverFlow')
+            document.body.scrollTop = document.documentElement.scrollTop = 0;
         } else {
-            // gsap.to('div.top_section', {marginTop:'0px', opacity:1, duration:1.5})
-            // gsap.set('div.noteOnDrag', {display: 'block'})
             await dragTrigger.start('normal')
             gsap.set('div.ImgBoardOutside', { height:'400px'})
 
-            
+            document.querySelector('body')?.classList.remove('stopOverFlow')
+            scroll_body_back_to_its_last_scroll()
         }
     }, [dragTrigger])
 
     useEffect(() => {
         const unSubscribe = xDrag.onChange(latest => {
-            console.log('boss is changing', {latest})
+            // console.log('boss is changing', {latest})
 
             if (latest > -10) {
                 expandTheImageBoard('out')
-                imageBoardClicked()
-                console.log('remove')
+                resize_the_image_board()
+                expandedImageView.current = false;
             } else if (latest <= -10) {
-
                 expandTheImageBoard('intro')
-                imageBoardClicked()
+                resize_the_image_board()
+                expandedImageView.current = true;
             }
         })
     
@@ -126,14 +136,14 @@ const App = () => {
                 animate={dragTrigger}
                 className="ImgBoardOutside"
             >
-                <div className="">
-                    <div className="">
-                        <div className="logoImg">
-                            <img src={logo2} alt="" />
-                        </div>
+                <motion.div variants={enlargeHeader} animate={dragTrigger} className="EnlargeHeader">
+                    <div className="logoImg">
+                        <img src={logo2} alt="" />
                     </div>
-                    <div className=""></div>
-                </div>
+                    <div className="EnlargeClose" onClick={() => { expandTheImageBoard('out'); xDrag.stop(); xDrag.set(0) }}>
+                        <GrClose color='#fff' />
+                    </div>
+                </motion.div>
                 <motion.div
                     className="ImgBoardInside"
                     drag='x'

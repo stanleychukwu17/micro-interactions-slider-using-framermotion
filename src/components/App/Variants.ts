@@ -52,3 +52,20 @@ export const ImageBoardCovered: general & {normal: Variant} = {
         }
     }
 }
+
+export const enlargeHeader: general & {normal: Variant} = { 
+    normal: {
+        display: 'none',
+        // transition: {
+        //     duration: 0.3,
+        //     ease: 'easeOut',
+        // }
+    },
+    animate: {
+        display: 'flex',
+        // transition: {
+        //     duration: 0.3,
+        //     ease: 'easeOut',
+        // }
+    }
+}

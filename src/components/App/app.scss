@@ -9,6 +9,11 @@ body {
     background-color: #f7ffff !important;
     color: $textColor;
 
+    
+    &.stopOverFlow {
+        @include u1.block_display();
+    }
+
     .button {
         position: relative;
         cursor: pointer;
@@ -129,6 +134,24 @@ body {
             img {
                 max-height: 100%;
                 pointer-events: none;
+            }
+        }
+
+        .EnlargeHeader {
+            // display: flex;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 1.5%;
+            margin: 0 0 50px;
+
+            .EnlargeClose {
+                font-size: u1.rem(25);
+                cursor: pointer;
+
+                path {
+                    stroke: #fff !important;
+                }
             }
         }
     }
