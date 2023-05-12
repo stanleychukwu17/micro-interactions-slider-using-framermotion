@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react';
-import { motion, useMotionValue, useAnimationControls } from 'framer-motion';
+import { motion, useMotionValue, useAnimationControls, animate } from 'framer-motion';
 import { gsap } from 'gsap';
 import { gVariant, buttonVariant, ImageBoardCovered, enlargeHeader, topSectionVariant } from './Variants';
 
@@ -38,16 +38,23 @@ const App = () => {
         }
     }, [])
 
-    // just to call the resize_the_image_board() when the page is done loading
+    // just to call the resize_the_image_board() when this webpage is done loading
     useEffect(() => { resize_the_image_board() }, [resize_the_image_board])
 
 
-    // when the use exits the enlarged image viewer, we want the document to scroll back to the position it was pre-enlargement
+    // when the user exits the enlarged image viewer, we want the document to scroll back to the position it was pre-enlargement
     const scroll_body_back_to_its_last_scroll = useCallback(() => {
         let lastTop = latest_scrollTop.current;
-        document.body.scrollTop = document.documentElement.scrollTop = lastTop
+
+        animate(0, lastTop, {
+            duration:1,
+            onUpdate: (latest) => {
+                document.body.scrollTop = document.documentElement.scrollTop = Math.ceil(latest)
+            }
+        })
     }, [])
 
+    // this function is used to expand the image viewer and also to exit the expanded image viewer
     const expandTheImageBoard = useCallback(async (wch:'intro'|'out') => {
         if (wch === 'intro') {
             dragTrigger.start('animate')
@@ -60,15 +67,17 @@ const App = () => {
             await dragTrigger.start('normal')
             gsap.set('div.ImgBoardOutside', { height:'400px'})
 
-            document.querySelector('body')?.classList.remove('stopOverFlow')
             scroll_body_back_to_its_last_scroll()
+            document.querySelector('body')?.classList.remove('stopOverFlow')
         }
     }, [dragTrigger, scroll_body_back_to_its_last_scroll])
 
+
+    // used to expand the image viewer and also to collapse the image viewer 
     useEffect(() => {
         const unSubscribe = xDrag.onChange(latest => {
 
-            if (latest > -10) {
+            if (latest > -10) { // expand the image viewer
                 if (!expandedImageView.current) { // image viewer already collapsed, no need to collapse again
                     return
                 }
@@ -76,7 +85,7 @@ const App = () => {
                 expandTheImageBoard('out')
                 resize_the_image_board()
                 expandedImageView.current = false;
-            } else if (latest <= -10) {
+            } else if (latest <= -10) { // collapse the expanded image viewer
                 if (expandedImageView.current) { // image viewer already expanded, no need to expand again
                     return
                 }
@@ -89,7 +98,6 @@ const App = () => {
     
         return () => { unSubscribe() }
     }, [xDrag, expandTheImageBoard, resize_the_image_board])
-
 
 
     return (
@@ -151,7 +159,10 @@ const App = () => {
                     dragElastic={false}
                     style={{x:xDrag}}
                 >
-                    <img src={imageBoard} alt="" />
+                    <motion.img
+                        variants={gVariant} custom={4} initial='initial' animate='animate'
+                        src={imageBoard} alt=""
+                    />
                 </motion.div>
             </motion.div>
             <div className="noteOnDrag">
